@@ -42,11 +42,7 @@ static const int kStatusCodeError = 9;
  * Helper method to pause the Unity player.  This is done when showing any UI.
  */
 void UnpauseUnityPlayer() {
-  dispatch_async(dispatch_get_main_queue(), ^{
-    if (UnityIsPaused() > 0) {
-      UnityPause(0);
-    }
-  });
+  NSLog(@"UnpauseUnityPlayer");
 }
 
 // result for pending operation.  Access to this should be protected using the
