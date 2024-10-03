@@ -91,8 +91,9 @@ NSMutableArray* additionalScopes = nil;
  */
 - (void)signIn:(GIDSignIn *)signIn
     dismissViewController:(UIViewController *)viewController {
-  UnityPause(false);
-  [UnityGetGLViewController() dismissViewControllerAnimated:YES completion:nil];
+    [UnityGetGLViewController() dismissViewControllerAnimated:YES completion:^{
+      UnityPause(false);
+    }];
 }
 
 /**
