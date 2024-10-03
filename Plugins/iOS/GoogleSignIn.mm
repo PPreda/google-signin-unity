@@ -42,7 +42,11 @@ static const int kStatusCodeError = 9;
  * Helper method to pause the Unity player.  This is done when showing any UI.
  */
 void UnpauseUnityPlayer() {
-  NSLog(@"UnpauseUnityPlayer");
+  dispatch_async(dispatch_get_main_queue(), ^{
+    if (UnityIsPaused() > 0) {
+      UnityPause(0);
+    }
+  });
 }
 
 // result for pending operation.  Access to this should be protected using the
@@ -74,31 +78,21 @@ NSMutableArray* additionalScopes = nil;
 /**
  * Overload the presenting of the UI so we can pause the Unity player.
  */
-- (void)signIn:(GIDSignIn *)signIn presentViewController:(UIViewController *)viewController {
-    if (viewController == nil) {
-        NSLog(@"The viewController is nil, cannot present.");
-        return;
-    } else {
-        NSLog(@"Presenting viewController: %@", viewController);
-    }
-
-    UnityPause(true);
-    [UnityGetGLViewController() presentViewController:viewController animated:YES completion:nil];
+- (void)signIn:(GIDSignIn *)signIn
+    presentViewController:(UIViewController *)viewController {
+  UnityPause(true);
+  [UnityGetGLViewController() presentViewController:viewController
+                                           animated:YES
+                                         completion:nil];
 }
 
 /**
  * Overload the dismissing so we can resume the Unity player.
  */
-- (void)signIn:(GIDSignIn *)signIn dismissViewController:(UIViewController *)viewController {
-    if (viewController == nil) {
-        NSLog(@"The viewController is nil, cannot dismiss.");
-        return;
-    } else {
-        NSLog(@"Dismissing viewController: %@", viewController);
-    }
-
-    UnityPause(false);
-    [UnityGetGLViewController() dismissViewControllerAnimated:YES completion:nil];
+- (void)signIn:(GIDSignIn *)signIn
+    dismissViewController:(UIViewController *)viewController {
+  UnityPause(false);
+  [UnityGetGLViewController() dismissViewControllerAnimated:YES completion:nil];
 }
 
 /**
