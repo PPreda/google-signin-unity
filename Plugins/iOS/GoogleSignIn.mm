@@ -78,22 +78,31 @@ NSMutableArray* additionalScopes = nil;
 /**
  * Overload the presenting of the UI so we can pause the Unity player.
  */
-- (void)signIn:(GIDSignIn *)signIn
-    presentViewController:(UIViewController *)viewController {
-  UnityPause(true);
-  [UnityGetGLViewController() presentViewController:viewController
-                                           animated:YES
-                                         completion:nil];
+- (void)signIn:(GIDSignIn *)signIn presentViewController:(UIViewController *)viewController {
+    if (viewController == nil) {
+        NSLog(@"The viewController is nil, cannot present.");
+        return;
+    } else {
+        NSLog(@"Presenting viewController: %@", viewController);
+    }
+
+    UnityPause(true);
+    [UnityGetGLViewController() presentViewController:viewController animated:YES completion:nil];
 }
 
 /**
  * Overload the dismissing so we can resume the Unity player.
  */
-- (void)signIn:(GIDSignIn *)signIn
-    dismissViewController:(UIViewController *)viewController {
-    [UnityGetGLViewController() dismissViewControllerAnimated:YES completion:^{
-      UnityPause(false);
-    }];
+- (void)signIn:(GIDSignIn *)signIn dismissViewController:(UIViewController *)viewController {
+    if (viewController == nil) {
+        NSLog(@"The viewController is nil, cannot dismiss.");
+        return;
+    } else {
+        NSLog(@"Dismissing viewController: %@", viewController);
+    }
+
+    UnityPause(false);
+    [UnityGetGLViewController() dismissViewControllerAnimated:YES completion:nil];
 }
 
 /**
